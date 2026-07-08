@@ -1,5 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const root = document.documentElement;
+
+  root.classList.add("page-loading");
+  document.body.classList.add("page-loading");
+  document.body.classList.remove("page-loaded");
+
   // SIMPLE FADE ANIMATION
   window.addEventListener("load", () => {
     document.body.classList.add("loaded");
@@ -141,11 +147,25 @@ window.addEventListener("load", () => {
 
   if (loader) {
 
-    setTimeout(() => {
+    window.setTimeout(() => {
 
       loader.classList.add("hide");
 
-    }, 1200);
+      window.setTimeout(() => {
+
+        document.documentElement.classList.remove("page-loading");
+        document.body.classList.remove("page-loading");
+        document.body.classList.add("page-loaded");
+
+      }, 850);
+
+    }, 700);
+
+  } else {
+
+    document.documentElement.classList.remove("page-loading");
+    document.body.classList.remove("page-loading");
+    document.body.classList.add("page-loaded");
 
   }
 
