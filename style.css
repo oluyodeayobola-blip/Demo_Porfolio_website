@@ -74,8 +74,18 @@ nav{
   gap: 38px;
 }
 
-.navbar a{
+.navbar a,
+.primary-btn,
+.secondary-btn,
+.blog-content a,
+.footer a,
+.footer-links a,
+.cta-link,
+.contact-link{
   text-decoration: none;
+}
+
+.navbar a{
   color: white;
 
   font-size: 15px;
@@ -192,6 +202,9 @@ nav{
 }
 
 .primary-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 16px 32px;
 
   border: none;
@@ -212,6 +225,9 @@ nav{
 }
 
 .secondary-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 16px 32px;
 
   border: 1px solid #444;
