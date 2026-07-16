@@ -1,4 +1,64 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ARTICLES CAROUSEL / PAGINATION
+  (function(){
+    const cards = Array.from(document.querySelectorAll('.blog-card'));
+    if (!cards.length) return;
+
+    const prevBtn = document.querySelector('.btn-prev');
+    const nextBtn = document.querySelector('.btn-next');
+    const indicator = document.querySelector('.page-indicator');
+
+    let currentPage = 0;
+
+    function calcPageSize(){
+      // Keep the editorial card row visible on desktop.
+      return 3;
+    }
+
+    const blogGrid = document.querySelector('.blog-grid');
+
+    function render(){
+      const pageSize = calcPageSize();
+      const totalPages = Math.max(1, Math.ceil(cards.length / pageSize));
+      if (currentPage >= totalPages) currentPage = totalPages - 1;
+
+      cards.forEach((card, i) => {
+        const start = currentPage * pageSize;
+        card.style.display = (i >= start && i < start + pageSize) ? 'block' : 'none';
+      });
+
+      // apply single-view layout when showing one article
+      if (blogGrid) blogGrid.classList.toggle('single-view', pageSize === 1);
+
+      if (indicator) indicator.textContent = `${currentPage + 1} / ${totalPages}`;
+      if (prevBtn) prevBtn.disabled = currentPage === 0;
+      if (nextBtn) nextBtn.disabled = currentPage >= totalPages - 1;
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        render();
+        window.scrollTo({ top: document.querySelector('.blog-grid').offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+      const pageSize = calcPageSize();
+      const totalPages = Math.max(1, Math.ceil(cards.length / pageSize));
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        render();
+        window.scrollTo({ top: document.querySelector('.blog-grid').offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+
+    window.addEventListener('resize', () => { currentPage = 0; render(); });
+
+    render();
+  })();
+
+  // Featured carousel removed — static featured display with hover overlay
 
   const root = document.documentElement;
 
@@ -12,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // BUTTON INTERACTION
-  const buttons = document.querySelectorAll("button");
+  const buttons = document.querySelectorAll("button:not([data-static-button])");
 
   buttons.forEach(button => {
     button.addEventListener("mouseenter", () => {
@@ -31,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // CURSOR HOVER EFFECT
-  const hoverItems = document.querySelectorAll("a, button");
+  const hoverItems = document.querySelectorAll("a, button:not([data-static-button])");
 
   hoverItems.forEach(item => {
 
@@ -93,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // MAGNETIC BUTTONS
   const magneticButtons =
-    document.querySelectorAll("button");
+    document.querySelectorAll("button:not([data-static-button])");
 
   magneticButtons.forEach(button => {
 
